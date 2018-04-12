@@ -659,7 +659,7 @@ debug@2.X, debug@^2.1.1, debug@^2.2.0, debug@^2.6.6:
   dependencies:
     ms "0.7.3"
 
-debug@^3.1.0:
+debug@^3.0.0, debug@^3.1.0:
   version "3.1.0"
   resolved "https://registry.npmjs.org/debug/-/debug-3.1.0.tgz#5bb5a0672628b64149566ba16819e61518c67261"
   dependencies:
@@ -1023,6 +1023,12 @@ fancy-log@^1.1.0:
 fast-levenshtein@~2.0.4:
   version "2.0.6"
   resolved "http://registry.npm.taobao.org/fast-levenshtein/download/fast-levenshtein-2.0.6.tgz#3d8a5c66883a16a30ca8643e851f19baa7797917"
+
+feathers-errors@^2.8.0:
+  version "2.9.2"
+  resolved "https://registry.npmjs.org/feathers-errors/-/feathers-errors-2.9.2.tgz#96ca0e5fe50cc56f0eccc90ce3fa5e1f8840828d"
+  dependencies:
+    debug "^3.0.0"
 
 figures@^1.3.5:
   version "1.7.0"
@@ -2658,10 +2664,6 @@ rx-lite@^3.1.2:
 safe-buffer@^5.0.1:
   version "5.0.1"
   resolved "http://registry.npm.taobao.org/safe-buffer/download/safe-buffer-5.0.1.tgz#d263ca54696cd8a306b5ca6551e92de57918fbe7"
-
-seamless-immutable@^7.1.2:
-  version "7.1.2"
-  resolved "http://registry.npm.taobao.org/seamless-immutable/download/seamless-immutable-7.1.2.tgz#c87a1eba6767a32455311d76600ac5eddeafbb69"
 
 semver-diff@^2.0.0:
   version "2.1.0"
