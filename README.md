@@ -1,16 +1,16 @@
-Mostly Entity
-=============
+Mostly Feathers Validate
+========================
 
-[![Build Status](https://travis-ci.org/mostlyjs/mostly-entity.svg)](https://travis-ci.org/mostlyjs/mostly-entity)
+[![Build Status](https://travis-ci.org/mostlyjs/mostly-feathers-validate.svg)](https://travis-ci.org/mostlyjs/mostly-feathers-validate)
 
-Utilities for parsing incoming and exposing outgoing data fields for vary endpoints.
+MostlyJS hook utility for schema validation, sanitization and client notification.
 
 # Usage
 
 ## Installation
 
 ```bash
-npm install mostly-entity
+npm install mostly-feathers-validate
 ```
 
 # License
