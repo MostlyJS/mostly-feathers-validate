@@ -1,6 +1,7 @@
 import { BadRequest } from 'feathers-errors';
 
 import Sanitization from '../sanitization';
+import buildArgs from '../dynamic';
 
 export default function sanitizate (accepts) {
   return async (context) => {
@@ -15,6 +16,7 @@ export default function sanitizate (accepts) {
       case 'get':
       case 'remove':
         if (accepts[action]) {
+          context.params = await buildArgs(context.params, accepts[action]);
           context.params = await Sanitization(context.params, accepts[action]);
         }
         break;
@@ -22,6 +24,7 @@ export default function sanitizate (accepts) {
       case 'update':
       case 'patch':
         if (accepts[action]) {
+          context.data = await buildArgs(context.data, accepts[action]);
           context.data = await Sanitization(context.data, accepts[action]);
         }
         break;
