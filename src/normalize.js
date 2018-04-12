@@ -119,12 +119,12 @@ export default async function normalize (params, accepts, options = { delimiters
     // For boolean and number types, convert certain strings to that type.
     // The user can also define new dynamic types.
     if (Dynamic.canConvert(otype)) {
-      val = dynamic(val, otype, options);
+      val = dynamic(val, otype, params);
     }
 
     if (fp.isNil(val) && accept.hasOwnProperty('default')) {
       if (fp.isFunction(accept.default)) {
-        val = await accept.default();
+        val = await accept.default(params);
       } else {
         val = accept.default;
       }
