@@ -197,9 +197,12 @@ class ValidationError {
  *
  * ``` javascript
  * [
- *   { arg: 'name', validates: { required: true } },
+ *   { arg: 'name', validates: { required: true,
+ *      isLength: { args: [1, 10], message: 'Length of name cannot be zero or more than 10' } } },
  *   { arg: 'age', validates: { required: true, isInt: true }
  *   { arg: 'email', validates: { isEmail: true }
+ *   { arg: 'name', validates: { : true }
+ *   { arg: 'email', validates: { phone: { { args: ['zh-CN'], message: 'Phone number is invalid' } } }
  * ]
  * ```
  */
@@ -323,6 +326,14 @@ Validation.method = function (name) {
 /*!
  * Add default validator `required`
  */
-Validation.extend('required', function (val) {
+Validation.extend('required', (val) => {
   return fp.isValid(val);
+});
+
+/**
+ * Add default validator `exists` by service
+ */
+Validation.extend('exists', (service, idField, message) => async (val, params) => {
+  const item = await service.get(params[idField]);
+  if (!item) return message;
 });
