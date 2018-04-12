@@ -77,7 +77,7 @@ class ValidationError {
    */
   add (name, validatorName, msg) {
     msg = msg || this.defaultMessage(name, validatorName);
-    var obj = this._errors[name] || {};
+    let obj = this._errors[name] || {};
     obj[validatorName] = msg;
     this._errors[name] = obj;
   }
@@ -96,12 +96,11 @@ class ValidationError {
    *   example:  ['email is not a valid', 'name is required']
    */
   flatten () {
-    var self = this;
-    var messages = fp.flatMap(([name, obj]) => {
+    const messages = fp.flatMap(([name, obj]) => {
       return fp.map(([validatorName, msg]) => {
-        return msg && msg.toString() || self.defaultMessage(name, validatorName);
+        return msg && msg.toString() || this.defaultMessage(name, validatorName);
       }, fp.toPairs(obj));
-    }, fp.toPairs(self._errors));
+    }, fp.toPairs(this._errors));
     return messages;
   }
 
@@ -249,10 +248,10 @@ export default async function Validation (params, accepts) {
   };
 
   const validateAll = fp.flatMap((accept) => {
-    var name = accept.arg;
-    var val = params[name];
+    const name = accept.arg || accept.name;
+    const val = params[name];
 
-    var validators = fp.assign({}, accept.validates);
+    const validators = fp.assign({}, accept.validates);
 
     // copy `required` from accept to validators
     if (accept.hasOwnProperty('required')) {
@@ -288,8 +287,8 @@ export default async function Validation (params, accepts) {
  *
  * ``` javascript
  * Validate.extend('atLeastOneExists', function() {
- *   var args = [].slice(arguments);
- *   var result = false;
+ *   let args = [].slice(arguments);
+ *   let result = false;
  *   args.forEach(function(arg) {
  *     if (arg) {
  *       result = true;
@@ -301,7 +300,7 @@ export default async function Validation (params, accepts) {
  */
 Validation.extend = function (name, fn) {
   Validator[name] = async function () {
-    var args = Array.prototype.slice.call(arguments);
+    let args = Array.prototype.slice.call(arguments);
     args[0] = __validator__.toString(args[0]);
     return fn.apply(Validator, args);
   };

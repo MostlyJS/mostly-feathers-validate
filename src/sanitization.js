@@ -102,8 +102,8 @@ export default async function Sanitization (params, accepts) {
     }
     // else find coorespond sanitizer in built in Sanitizer
     else {
-      var sanitizer = Sanitizer[sanitizerName];
-      var args = [val];
+      const sanitizer = Sanitizer[sanitizerName];
+      let args = [val];
       if (!fp.is(Boolean, sanitizerOpts)) {
         args.push(sanitizerOpts);
       }
@@ -123,10 +123,10 @@ export default async function Sanitization (params, accepts) {
   };
 
   const sanitizeAll = fp.flatMap((accept) => {
-    var name = accept.arg;
-    var val = params[name];
+    const name = accept.arg || accept.name;
+    const val = params[name];
 
-    var sanitizers = fp.assign({}, accept.sanitizes);
+    const sanitizers = fp.assign({}, accept.sanitizes);
 
     if (sanitizers && fp.isPlainObject(sanitizers) && !fp.isEmpty(val)) {
       return fp.map(([sanitizerName, sanitizerOpts]) => {

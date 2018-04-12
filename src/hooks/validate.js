@@ -3,36 +3,36 @@ import { BadRequest } from 'feathers-errors';
 import Validation from '../validation';
 
 export default function validate (accepts) {
-  return async (hook) => {
+  return async (context) => {
     if (typeof accepts === 'function') {
-      accepts = accepts(hook);
+      accepts = accepts(context);
     }
-    const action = hook.params.__action || hook.method;
-    if (!accepts[action]) return hook;
+    const action = context.params.__action || context.method;
+    if (!accepts[action]) return context;
 
     let errors = null;
-    switch (hook.method) {
+    switch (context.method) {
       case 'find':
       case 'get':
       case 'remove':
         if (accepts[action]) {
-          errors = await Validation(hook.params, accepts[action]);
+          errors = await Validation(context.params, accepts[action]);
         }
         break;
       case 'create':
       case 'update':
       case 'patch':
         if (accepts[action]) {
-          errors = await Validation(hook.data, accepts[action]);
+          errors = await Validation(context.data, accepts[action]);
         }
         break;
     }
     if (errors && errors.any()) {
-      if (hook.data) {
-        hook.data.errors = errors.toHuman();
+      if (context.data) {
+        context.data.errors = errors.toHuman();
       }
       throw new BadRequest('Validation failed: ' + errors.toHuman());
     }
-    return hook;
+    return context;
   };
 }
