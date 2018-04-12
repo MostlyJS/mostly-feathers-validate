@@ -1,4 +1,5 @@
 import { BadRequest } from 'feathers-errors';
+import fp from 'mostly-func';
 
 import Validation from '../validation';
 
@@ -16,14 +17,16 @@ export default function validate (accepts) {
       case 'get':
       case 'remove':
         if (accepts[action]) {
-          errors = await Validation(context.params, accepts[action]);
+          const params = fp.assoc('$id', context.id, context.params);
+          errors = await Validation(params, accepts[action]);
         }
         break;
       case 'create':
       case 'update':
       case 'patch':
         if (accepts[action]) {
-          errors = await Validation(context.data, accepts[action]);
+          const data = fp.assoc('$id', context.id, context.data);
+          errors = await Validation(data, accepts[action]);
         }
         break;
     }
