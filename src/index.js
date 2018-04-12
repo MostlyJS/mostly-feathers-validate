@@ -2,7 +2,7 @@ import { BadRequest } from 'feathers-errors';
 
 import Validate from './validate';
 
-export default function validation (accepts) {
+function validate (accepts) {
   return async (hook) => {
     if (typeof accepts === 'function') {
       accepts = accepts(hook);
@@ -36,3 +36,5 @@ export default function validation (accepts) {
     return hook;
   };
 }
+
+export default { validate };
