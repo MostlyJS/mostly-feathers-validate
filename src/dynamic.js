@@ -1,17 +1,17 @@
 import makeDebug from 'debug';
-import Dynamic from 'mostly-entity';
+import { Dynamic } from 'mostly-entity';
 import fp from 'mostly-func';
 
 const debug = makeDebug('mostly:feathers-validate:dynamic');
 
 // Use dynamic to coerce a value or array of values.
-function dynamic (val, toType, ctx) {
+function dynamic (val, toType, opts) {
   if (Array.isArray(val)) {
     return fp.map((v) => {
-      return dynamic(v, toType, ctx);
+      return dynamic(v, toType, opts);
     }, val);
   }
-  return (new Dynamic(val, ctx)).to(toType);
+  return (new Dynamic(val, opts)).to(toType);
 }
 
 /*!
@@ -119,7 +119,7 @@ export default async function buildArgs (params, accepts, options = { delimiters
     // For boolean and number types, convert certain strings to that type.
     // The user can also define new dynamic types.
     if (Dynamic.canConvert(otype)) {
-      val = dynamic(val, otype, context);
+      val = dynamic(val, otype, options);
     }
 
     if (accept.hasOwnProperty('default')) {
