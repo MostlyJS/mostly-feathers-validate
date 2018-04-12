@@ -87,7 +87,7 @@ Sanitizer.xss = xss;
  * ]
  * ```
  */
-export default async function Sanitize (params, accepts) {
+export default async function Sanitization (params, accepts) {
   params = params || {};
   accepts = accepts || [];
 
@@ -152,7 +152,7 @@ export default async function Sanitize (params, accepts) {
  * });
  * ```
  */
-Sanitize.extend = function (name, fn) {
+Sanitization.extend = function (name, fn) {
   Sanitizer[name] = function () {
     return fn.apply(Sanitizer, arguments);
   };
@@ -167,6 +167,6 @@ Sanitize.extend = function (name, fn) {
  * Sanitize.method('blacklist');
  * ```
  */
-Sanitize.method = function (name) {
+Sanitization.method = function (name) {
   return Sanitizer[name];
 };
