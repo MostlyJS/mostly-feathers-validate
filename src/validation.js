@@ -204,7 +204,7 @@ class ValidationError {
  * ]
  * ```
  */
-export default async function Validate (params, accepts) {
+export default async function Validation (params, accepts) {
 
   let validationError = new ValidationError();
   params = params || {};
@@ -299,7 +299,7 @@ export default async function Validate (params, accepts) {
  * });
  * ```
  */
-Validate.extend = function (name, fn) {
+Validation.extend = function (name, fn) {
   Validator[name] = async function () {
     var args = Array.prototype.slice.call(arguments);
     args[0] = __validator__.toString(args[0]);
@@ -316,7 +316,7 @@ Validate.extend = function (name, fn) {
  * Validate.method('contains');
  * ```
  */
-Validate.method = function (name) {
+Validation.method = function (name) {
   return Validator[name];
 };
 
@@ -324,6 +324,6 @@ Validate.method = function (name) {
 /*!
  * Add default validator `required`
  */
-Validate.extend('required', function (val) {
+Validation.extend('required', function (val) {
   return fp.isValid(val);
 });
