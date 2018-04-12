@@ -97,12 +97,12 @@ class ValidationError {
    */
   flatten () {
     var self = this;
-    var messages = fp.map((obj, name) => {
-      return fp.map((msg, validatorName) => {
-        return msg.toString() || self.defaultMessage(name, validatorName);
-      }, obj);
-    }, self._errors);
-    return fp.flatten(messages);
+    var messages = fp.flatMap(([name, obj]) => {
+      return fp.map(([validatorName, msg]) => {
+        return msg && msg.toString() || self.defaultMessage(name, validatorName);
+      }, fp.toPairs(obj));
+    }, fp.toPairs(self._errors));
+    return messages;
   }
 
   /**
@@ -206,15 +206,14 @@ class ValidationError {
  */
 export default async function Validate (params, accepts) {
 
-  var validationError = new ValidationError();
+  let validationError = new ValidationError();
   params = params || {};
   accepts = accepts || [];
 
-  var performValidator = async function (name, val, validatorOpts, validatorName) {
+  const performValidator = async function (name, val, validatorOpts, validatorName) {
     validatorOpts = validatorOpts || {};
 
     // if validator is a custom function, then execute it
-    // else find cooresponding validator in built in Validator
     if (fp.isFunction(validatorOpts)) {
       try {
         const result = await validatorOpts(val, params);
@@ -224,7 +223,9 @@ export default async function Validate (params, accepts) {
       } catch (e) {
         debug('Error: \'%s\' when calling function \'%s\'', e.message, validatorName);
       }
-    } else {
+    }
+    // else find cooresponding validator in built in Validator
+    else {
       if (!validatorOpts) return;
 
       const validator = Validator[validatorName];
@@ -240,8 +241,7 @@ export default async function Validate (params, accepts) {
 
       if (validator && fp.isFunction(validator)) {
         // if validation failed, then add error message
-        const result = await validator.apply(Validator, args);
-        if (!result) {
+        if (!validator.apply(Validator, args)) {
           validationError.add(name, validatorName, message);
         }
       } else {
@@ -250,7 +250,7 @@ export default async function Validate (params, accepts) {
     }
   };
 
-  fp.forEach(async function (accept) {
+  const validateAll = fp.flatMap((accept) => {
     var name = accept.arg;
     var val = params[name];
 
@@ -265,19 +265,20 @@ export default async function Validate (params, accepts) {
       if (fp.isNil(val)) {
         // check if value exists, if not, then check whether the value is required
         if (validators.hasOwnProperty('required')) {
-          await performValidator(name, val, validators.required, 'required');
+          return performValidator(name, val, validators.required, 'required');
         }
       } else {
         // delete `required` validator for latter iteration
         delete validators.required;
-        fp.forEach(async function (validatorOpts, validatorName) {
-          await performValidator(name, val, validatorOpts, validatorName);
-        }, validators);
+        return fp.map(([validatorName, validatorOpts]) => {
+          return performValidator(name, val, validatorOpts, validatorName);
+        }, fp.toPairs(validators));
       }
     } else {
       debug(' ** invalid validators', validators);
     }
-  }, accepts);
+  });
+  await Promise.all(validateAll(accepts));
 
   return validationError;
 }
