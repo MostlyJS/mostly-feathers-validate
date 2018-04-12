@@ -72,7 +72,7 @@ export default async function normalize (params, accepts, options = { delimiters
   params = params || {};
   accepts = accepts || [];
 
-  const buildAll = fp.flatMap((accept) => {
+  const buildAll = fp.flatMap(async (accept) => {
     const name = accept.arg || accept.name;
     let val = params[name];
 
@@ -122,8 +122,12 @@ export default async function normalize (params, accepts, options = { delimiters
       val = dynamic(val, otype, options);
     }
 
-    if (accept.hasOwnProperty('default')) {
-      val = val || accept.default;
+    if (fp.isNil(val) && accept.hasOwnProperty('default')) {
+      if (fp.isFunction(accept.default)) {
+        val = await accept.default();
+      } else {
+        val = accept.default;
+      }
     }
 
     // set the params value
