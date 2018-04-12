@@ -68,7 +68,7 @@ function coerceAll (obj) {
   return obj;
 }
 
-export default async function buildArgs (params, accepts, options = { delimiters: ',' }) {
+export default async function normalize (params, accepts, options = { delimiters: ',' }) {
   params = params || {};
   accepts = accepts || [];
 
