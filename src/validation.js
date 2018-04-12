@@ -223,7 +223,9 @@ export default async function Validation (params, accepts) {
           validationError.add(name, validatorName, result);
         }
       } catch (e) {
-        debug('Error: \'%s\' when calling function \'%s\'', e.message, validatorName);
+        const message = util.format('Error: \'%s\' when calling function \'%s\'', e.message, validatorName);
+        debug(message);
+        validationError.add(name, validatorName, message);
       }
     }
     // else find cooresponding validator in built in Validator
@@ -245,14 +247,17 @@ export default async function Validation (params, accepts) {
           validationError.add(name, validatorName, message);
         }
       } else {
-        debug('Validator \'%s\' is not defined', validatorName);
+        const message = util.format('Validator \'%s\' is not defined', validatorName);
+        debug(message);
+        validationError.add(name, validatorName, message);
       }
     }
   };
 
   const validateAll = fp.flatMap((accept) => {
     const name = accept.arg || accept.name;
-    const val = params[name];
+    // name array for validate multiple fields in one rule
+    const val = fp.is(Array, name)? fp.pick(name, params) : params[name];
 
     const validators = fp.assign({}, accept.validates);
 
