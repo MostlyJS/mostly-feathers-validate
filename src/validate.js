@@ -1,5 +1,5 @@
-import fp from 'mostly-func';
 import makeDebug from 'debug';
+import fp from 'mostly-func';
 import __validator__ from 'validator';
 import util from 'util';
 
@@ -210,8 +210,8 @@ export default async function Validate (params, accepts) {
   params = params || {};
   accepts = accepts || [];
 
-  const performValidator = async function (name, val, validatorOpts, validatorName) {
-    validatorOpts = validatorOpts || {};
+  const performValidator = async function (name, val, validatorName, validatorOpts) {
+    if (!validatorOpts) return;
 
     // if validator is a custom function, then execute it
     if (fp.isFunction(validatorOpts)) {
@@ -226,8 +226,6 @@ export default async function Validate (params, accepts) {
     }
     // else find cooresponding validator in built in Validator
     else {
-      if (!validatorOpts) return;
-
       const validator = Validator[validatorName];
       let args = [val];
 
@@ -265,13 +263,13 @@ export default async function Validate (params, accepts) {
       if (fp.isNil(val)) {
         // check if value exists, if not, then check whether the value is required
         if (validators.hasOwnProperty('required')) {
-          return performValidator(name, val, validators.required, 'required');
+          return performValidator(name, val, 'required', validators.required);
         }
       } else {
         // delete `required` validator for latter iteration
         delete validators.required;
         return fp.map(([validatorName, validatorOpts]) => {
-          return performValidator(name, val, validatorOpts, validatorName);
+          return performValidator(name, val, validatorName, validatorOpts);
         }, fp.toPairs(validators));
       }
     } else {
