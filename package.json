@@ -23,7 +23,6 @@
     "debug": "^2.6.6",
     "esm": "^3.0.14",
     "feathers-errors": "^2.8.0",
-    "lodash": "^4.17.4",
     "ramda": "^0.24.1",
     "validator": "^8.0.0"
   },

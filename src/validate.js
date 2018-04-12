@@ -1,14 +1,12 @@
 import fp from 'mostly-func';
 import makeDebug from 'debug';
-import _ from 'lodash';
 import __validator__ from 'validator';
 import util from 'util';
 
 const debug = makeDebug('mostly:feathers-validate:validate');
 
-/*!
+/**
  * A collection of validators
- *
  */
 function Validator () {}
 
@@ -125,7 +123,7 @@ class ValidationError {
    * Check if there exists any error
    */
   any () {
-    return !_.isEmpty(this._errors);
+    return !fp.isEmpty(this._errors);
   }
 
 }
@@ -217,7 +215,7 @@ export default async function Validate (params, accepts) {
 
     // if validator is a custom function, then execute it
     // else find cooresponding validator in built in Validator
-    if (_.isFunction(validatorOpts)) {
+    if (fp.isFunction(validatorOpts)) {
       try {
         const result = await validatorOpts(val, params);
         if (result) {
@@ -232,15 +230,15 @@ export default async function Validate (params, accepts) {
       const validator = Validator[validatorName];
       let args = [val];
 
-      const message = _.isString(validatorOpts) ? validatorOpts : validatorOpts.message;
+      const message = fp.is(String, validatorOpts)? validatorOpts : validatorOpts.message;
 
       // build arguments for validator
       if (validatorOpts && validatorOpts.args) {
         args.push(validatorOpts.args);
-        args = _.flatten(args);
+        args = fp.flatten(args);
       }
 
-      if (validator && _.isFunction(validator)) {
+      if (validator && fp.isFunction(validator)) {
         // if validation failed, then add error message
         const result = await validator.apply(Validator, args);
         if (!result) {
@@ -252,19 +250,19 @@ export default async function Validate (params, accepts) {
     }
   };
 
-  _.each(accepts, async function (accept) {
+  fp.forEach(async function (accept) {
     var name = accept.arg;
     var val = params[name];
 
-    var validators = _.extend({}, accept.validates);
+    var validators = fp.assign({}, accept.validates);
 
     // copy `required` from accept to validators
     if (accept.hasOwnProperty('required')) {
       validators.required = accept.required;
     }
 
-    if (validators && _.isPlainObject(validators)) {
-      if (_.isNil(val)) {
+    if (validators && fp.isPlainObject(validators)) {
+      if (fp.isNil(val)) {
         // check if value exists, if not, then check whether the value is required
         if (validators.hasOwnProperty('required')) {
           await performValidator(name, val, validators.required, 'required');
@@ -272,14 +270,14 @@ export default async function Validate (params, accepts) {
       } else {
         // delete `required` validator for latter iteration
         delete validators.required;
-        _.each(validators, async function (validatorOpts, validatorName) {
+        fp.forEach(async function (validatorOpts, validatorName) {
           await performValidator(name, val, validatorOpts, validatorName);
-        });
+        }, validators);
       }
     } else {
       debug(' ** invalid validators', validators);
     }
-  });
+  }, accepts);
 
   return validationError;
 }
