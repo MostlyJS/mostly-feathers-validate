@@ -243,7 +243,8 @@ export default async function Validation (params, accepts) {
 
       if (validator && fp.isFunction(validator)) {
         // if validation failed, then add error message
-        if (!validator.apply(Validator, args)) {
+        const result = await validator.apply(Validator, args);
+        if (!result) {
           validationError.add(name, validatorName, message);
         }
       } else {
