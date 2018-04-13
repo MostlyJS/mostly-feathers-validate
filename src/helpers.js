@@ -39,3 +39,29 @@ export const idExists = (service, id, message) => async (val, params) => {
     if (!item) return message;
   }
 };
+
+
+/**
+ * Check props exists by service
+ */
+export const propExists = (service, { id, path, prop, select = '*' }, message) => async (val, params) => {
+  if (!path) return 'property path is empty';
+  const item = await service.get(params[id], { query: { $select: select } });
+  const target = fp.dotPath(path, item);
+  if (target) {
+    if (fp.is(Array, target)) {
+      if (prop) {
+        if (fp.find(fp.propEq(prop, val), target)) return;
+      } else {
+        if (fp.contains(val, target)) return;
+      }
+    } else {
+      if (prop) {
+        if (fp.propEq(prop, val, target)) return;
+      } else {
+        if (fp.equals(val, target)) return;
+      }
+    }
+  }
+  return message;
+};
