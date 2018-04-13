@@ -113,7 +113,7 @@ export default async function Sanitization (params, accepts) {
         try {
           val = await sanitizer.apply(Sanitizer, args);
         } catch (e) {
-          debug('Error: \'%s\' when calling function \'%s\'', e.message, sanitizerName);
+          debug('Error: \'%s\' when calling sanitize function \'%s\'', e.message, sanitizerName);
         }
       } else {
         debug('Sanitizer \'%s\' is not defined', sanitizerName);

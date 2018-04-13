@@ -1,4 +1,5 @@
 import { BadRequest } from 'feathers-errors';
+import fp from 'mostly-func';
 
 import Sanitization from '../sanitization';
 import normalize from '../normalize';
@@ -16,7 +17,8 @@ export default function sanitizate (accepts) {
       case 'get':
       case 'remove':
         if (accepts[action]) {
-          context.params = await normalize(context.params, accepts[action]);
+          const params = fp.assoc('$id', context.id, context.params);
+          context.params = await normalize(params, accepts[action]);
           context.params = await Sanitization(context.params, accepts[action]);
         }
         break;
@@ -24,7 +26,8 @@ export default function sanitizate (accepts) {
       case 'update':
       case 'patch':
         if (accepts[action]) {
-          context.data = await normalize(context.data, accepts[action]);
+          const data = fp.assoc('$id', context.id, context.data);
+          context.data = await normalize(data, accepts[action]);
           context.data = await Sanitization(context.data, accepts[action]);
         }
         break;
