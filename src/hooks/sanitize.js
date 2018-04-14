@@ -17,7 +17,7 @@ export default function sanitizate (accepts) {
       case 'get':
       case 'remove':
         if (accepts[action]) {
-          const params = fp.assoc('$id', context.id, context.params);
+          const params = fp.assoc('id', context.id, context.params);
           context.params = await normalize(params, accepts[action]);
           context.params = await Sanitization(context.params, accepts[action]);
         }
@@ -26,7 +26,7 @@ export default function sanitizate (accepts) {
       case 'update':
       case 'patch':
         if (accepts[action]) {
-          const data = fp.assoc('$id', context.id, context.data);
+          const data = fp.assoc('id', context.id, context.data);
           context.data = await normalize(data, accepts[action]);
           context.data = await Sanitization(context.data, accepts[action]);
         }

@@ -17,7 +17,7 @@ export default function validate (accepts) {
       case 'get':
       case 'remove':
         if (accepts[action]) {
-          const params = fp.assoc('$id', context.id, context.params);
+          const params = fp.assoc('id', context.id, context.params);
           errors = await Validation(params, accepts[action]);
         }
         break;
@@ -25,7 +25,7 @@ export default function validate (accepts) {
       case 'update':
       case 'patch':
         if (accepts[action]) {
-          const data = fp.assoc('$id', context.id, context.data);
+          const data = fp.assoc('id', context.id, context.data);
           errors = await Validation(data, accepts[action]);
         }
         break;
