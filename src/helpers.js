@@ -4,9 +4,9 @@ import util from 'util';
 /**
  * Check value is in an array
  */
-export const isIn = (name, array) => {
+export const isIn = (name, array, message) => {
   var newArray = Array.isArray(array) ? array : Object.keys(array);
-  return { args: [newArray], message: util.format('%s is invalid', name) };
+  return { args: [newArray], message: message || util.format('%s is invalid', name) };
 };
 
 /**
