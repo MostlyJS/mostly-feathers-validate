@@ -238,7 +238,7 @@ export default async function Validation (params, accepts) {
       // build arguments for validator
       if (validatorOpts && validatorOpts.args) {
         args.push(validatorOpts.args);
-        args = fp.flatten(args);
+        args = fp.unnest(args); // flatten only one level
       }
 
       if (validator && fp.isFunction(validator)) {
