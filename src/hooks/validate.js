@@ -22,6 +22,11 @@ export default function validate (accepts) {
         }
         break;
       case 'create':
+        if (accepts[action]) {
+          const data = fp.assoc('id', context.params.__id, context.data);
+          errors = await Validation(data, accepts[action]);
+        }
+        break;
       case 'update':
       case 'patch':
         if (accepts[action]) {
