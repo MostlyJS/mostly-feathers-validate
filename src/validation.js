@@ -223,7 +223,7 @@ export default async function Validation (params, accepts) {
           validationError.add(name, validatorName, result);
         }
       } catch (e) {
-        const message = util.format('Error: \'%s\' when calling function \'%s\'', e.message, validatorName);
+        const message = util.format('Error \'%s\' when calling function \'%s\'', e.message, validatorName);
         debug(message);
         validationError.add(name, validatorName, message);
       }
