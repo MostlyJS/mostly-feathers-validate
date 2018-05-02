@@ -8,7 +8,7 @@ export default function validate (accepts) {
     if (typeof accepts === 'function') {
       accepts = accepts(context);
     }
-    const action = context.params.__action || context.method;
+    const action = context.params.action || context.method;
     if (!accepts[action]) return context;
 
     let errors = null;
