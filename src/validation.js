@@ -258,7 +258,7 @@ export default async function Validation (params, accepts) {
   const validateAll = fp.flatMap((accept) => {
     const name = accept.arg || accept.name;
     // name array for validate multiple fields in one rule
-    const val = fp.is(Array, name)? fp.pick(name, params) : params[name];
+    const val = fp.isArray(name)? fp.pick(name, params) : params[name];
 
     const validators = fp.assign({}, accept.validates);
 

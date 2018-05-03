@@ -27,7 +27,7 @@ export const atLeastOneOf = (...fields) => {
  * check id exists by service
  */
 export const idExists = (service, id, message) => async (val, params) => {
-  if (fp.is(Array, id)) {
+  if (fp.isArray(id)) {
     const ids = fp.reject(fp.isNil, fp.values(fp.pick(id, params)));
     const items = await service.find({
       query: { _id: { $in: ids } },
@@ -49,7 +49,7 @@ export const propExists = (service, { id, path, prop, select = '*' }, message) =
   const item = await service.get(params[id], { query: { $select: select } });
   const target = fp.dotPath(path, item);
   if (target) {
-    if (fp.is(Array, target)) {
+    if (fp.isArray(target)) {
       if (prop) {
         if (fp.find(fp.propEq(prop, val), target)) return;
       } else {
