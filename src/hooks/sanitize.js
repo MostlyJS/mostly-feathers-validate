@@ -17,14 +17,14 @@ export default function sanitizate (accepts) {
       case 'get':
       case 'remove':
         if (accepts[action]) {
-          const params = fp.assoc('id', context.id, context.params);
-          context.params = await normalize(params, accepts[action]);
-          context.params = await Sanitization(context.params, accepts[action]);
+          const query = context.params.query || {};
+          context.params.query = await normalize(query, accepts[action]);
+          context.params.query = await Sanitization(context.params.query, accepts[action]);
         }
         break;
       case 'create':
         if (accepts[action]) {
-          const data = fp.assoc('primary', context.params.primary, context.data);
+          const data = fp.assoc('primary', context.params.primary, context.data || {});
           context.data = await normalize(data, accepts[action]);
           context.data = await Sanitization(data, accepts[action]);
         }
@@ -33,7 +33,7 @@ export default function sanitizate (accepts) {
       case 'patch':
         if (accepts[action]) {
           const data = fp.assoc('primary', context.params.primary,
-                       fp.assoc('id', context.id, context.data));
+                       fp.assoc('id', context.id, context.data || {}));
           context.data = await normalize(data, accepts[action]);
           context.data = await Sanitization(context.data, accepts[action]);
         }
