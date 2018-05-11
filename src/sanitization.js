@@ -126,7 +126,7 @@ export default async function Sanitization (params, accepts) {
     const name = accept.arg || accept.name;
     const val = params[name];
 
-    const sanitizers = fp.assign({}, accept.sanitizes);
+    const sanitizers = { ...accept.sanitizes };
 
     if (sanitizers && fp.isPlainObject(sanitizers) && !fp.isEmpty(val)) {
       return fp.map(([sanitizerName, sanitizerOpts]) => {

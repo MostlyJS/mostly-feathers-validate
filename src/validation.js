@@ -260,7 +260,7 @@ export default async function Validation (params, accepts) {
     // name array for validate multiple fields in one rule
     const val = fp.isArray(name)? fp.pick(name, params) : params[name];
 
-    const validators = fp.assign({}, accept.validates);
+    const validators = { ...accept.validates };
 
     // copy `required` from accept to validators
     if (accept.hasOwnProperty('required')) {
