@@ -24,20 +24,6 @@ export const atLeastOneOf = (...fields) => {
 };
 
 /**
- * Check value is included in array of a property of a params object
- */
-export const isInParams = (field, message) => async (val, params) => {
-  const props = fp.dotPath(field, params);
-  const roles = fp.isObject(val)? fp.keys(val) : val;
-  if (props) {
-    if (fp.includesAll(roles, props)) return;
-  } else {
-    message = 'Params field is not exists';
-  }
-  return message;
-};
-
-/**
  * check id exists by service
  */
 export const idExists = (service, id, message) => async (val, params) => {
@@ -53,7 +39,6 @@ export const idExists = (service, id, message) => async (val, params) => {
     if (!item) return message;
   }
 };
-
 
 /**
  * Check props exists by service
