@@ -122,7 +122,7 @@ export default async function Sanitization (params, accepts) {
     params[name] = val;
   };
 
-  const sanitizeAll = fp.flatMap((accept) => {
+  const sanitizeAll = fp.flatMap(accept => {
     const name = accept.arg || accept.name;
     const val = params[name];
 
