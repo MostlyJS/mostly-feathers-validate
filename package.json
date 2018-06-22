@@ -1,6 +1,6 @@
 {
   "name": "mostly-feathers-validate",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "MostlyJS utility for schema validation, sanitization and client notification",
   "author": "Forafish",
   "license": "MIT",
