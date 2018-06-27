@@ -5,6 +5,10 @@ Mostly Feathers Validate
 
 MostlyJS utility for schema validation, sanitization and client notification.
 
+# Documentation
+
+Please see the [documentation site](https://mostlyjs.github.io).
+
 # Usage
 
 ## Installation
