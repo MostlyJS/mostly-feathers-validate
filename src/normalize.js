@@ -44,7 +44,7 @@ function coerce (str) {
 
 // coerce every string in the given object / array
 function coerceAll (obj) {
-  const type = Array.isArray(obj) ? 'array' : typeof obj;
+  const type = Array.isArray(obj)? 'array' : typeof obj;
 
   switch (type) {
     case 'string':
@@ -78,7 +78,7 @@ export default async function normalize (params, accepts, options = { delimiters
 
     // Support array types, such as ['string']
     const isArrayType = Array.isArray(accept.type);
-    let otype = isArrayType ? accept.type[0] : accept.type;
+    let otype = isArrayType? accept.type[0] : accept.type;
     otype = (typeof otype === 'string') && otype.toLowerCase();
     const isAny = !otype || otype === 'any';
 
