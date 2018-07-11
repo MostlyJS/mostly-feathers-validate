@@ -1,9 +1,9 @@
-import { BadRequest } from 'feathers-errors';
-import fp from 'mostly-func';
+const { BadRequest } = require('feathers-errors');
+const fp = require('mostly-func');
 
-import Validation from '../validation';
+const Validation = require('../validation');
 
-export default function validate (accepts) {
+module.exports = function validate (accepts) {
   return async (context) => {
     if (typeof accepts === 'function') {
       accepts = accepts(context);
@@ -44,4 +44,4 @@ export default function validate (accepts) {
     }
     return context;
   };
-}
+};

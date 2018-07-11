@@ -1,10 +1,10 @@
-import fp from 'mostly-func';
-import util from 'util';
+const fp = require('mostly-func');
+const util = require('util');
 
 /**
  * Check value is in an array
  */
-export const isIn = (name, array, message) => {
+const isIn = (name, array, message) => {
   var newArray = Array.isArray(array)? array : Object.keys(array);
   return { args: [newArray], message: message || util.format('%s is invalid', name) };
 };
@@ -12,7 +12,7 @@ export const isIn = (name, array, message) => {
 /**
  * Check at least one of argument must be provided
  */
-export const atLeastOneOf = (...fields) => {
+const atLeastOneOf = (...fields) => {
   return (val, params) => {
     const values = fp.map((k) => params[k], fields);
     const allPassed = fp.reduce((acc, item) => {
@@ -26,7 +26,7 @@ export const atLeastOneOf = (...fields) => {
 /**
  * check id exists by service
  */
-export const idExists = (service, id, message) => async (val, params) => {
+const idExists = (service, id, message) => async (val, params) => {
   if (fp.isArray(id)) {
     const ids = fp.reject(fp.isNil, fp.values(fp.pick(id, params)));
     const items = await service.find({
@@ -43,7 +43,7 @@ export const idExists = (service, id, message) => async (val, params) => {
 /**
  * Check props exists by service
  */
-export const propExists = (service, { id, path, prop, select = '*' }, message) => async (val, params) => {
+const propExists = (service, { id, path, prop, select = '*' }, message) => async (val, params) => {
   if (!path) return 'property path is empty';
   const item = await service.get(params[id], { query: { $select: select } });
   const target = fp.dotPath(path, item);
@@ -63,4 +63,11 @@ export const propExists = (service, { id, path, prop, select = '*' }, message) =
     }
   }
   return message;
+};
+
+module.exports = {
+  atLeastOneOf,
+  idExists,
+  isIn,
+  propExists
 };

@@ -1,7 +1,7 @@
-import makeDebug from 'debug';
-import fp from 'mostly-func';
-import __validator__ from 'validator';
-import util from 'util';
+const makeDebug = require('debug');
+const fp = require('mostly-func');
+const __validator__ = require('validator');
+const util = require('util');
 
 const debug = makeDebug('mostly:feathers-validate:validate');
 
@@ -206,7 +206,7 @@ class ValidationError {
  * ]
  * ```
  */
-export default async function Validation (params, accepts) {
+async function Validation (params, accepts) {
 
   let validationError = new ValidationError();
   params = params || {};
@@ -343,3 +343,5 @@ Validation.extend('exists', (service, idField, message) => async (val, params) =
   const item = await service.get(params[idField]);
   if (!item) return message;
 });
+
+module.exports = Validation;

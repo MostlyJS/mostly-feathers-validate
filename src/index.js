@@ -1,9 +1,7 @@
-import { BadRequest } from 'feathers-errors';
+const sanitize = require('./hooks/sanitize');
+const validate = require('./hooks/validate');
+const Sanitization = require('./sanitization');
+const Validation = require('./validation');
+const helpers = require('./helpers');
 
-import sanitize from './hooks/sanitize';
-import validate from './hooks/validate';
-import Sanitization from './sanitization';
-import Validation from './validation';
-import * as helpers from './helpers';
-
-export default { sanitize, validate, Sanitization, Validation, helpers };
+module.exports = { sanitize, validate, Sanitization, Validation, helpers };

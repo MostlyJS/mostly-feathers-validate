@@ -1,7 +1,7 @@
-import makeDebug from 'debug';
-import fp from 'mostly-func';
-import __validator__ from 'validator';
-import xss from 'xss';
+const makeDebug = require('debug');
+const fp = require('mostly-func');
+const __validator__ = require('validator');
+const xss = require('xss');
 
 const debug = makeDebug('mostly:feathers-validate:sanitize');
 
@@ -85,7 +85,7 @@ Sanitizer.xss = xss;
  * ]
  * ```
  */
-export default async function Sanitization (params, accepts) {
+async function Sanitization (params, accepts) {
   params = params || {};
   accepts = accepts || [];
 
@@ -168,3 +168,5 @@ Sanitization.extend = function (name, fn) {
 Sanitization.method = function (name) {
   return Sanitizer[name];
 };
+
+module.exports = Sanitization;

@@ -1,10 +1,10 @@
-import { BadRequest } from 'feathers-errors';
-import fp from 'mostly-func';
+const { BadRequest } = require('feathers-errors');
+const fp = require('mostly-func');
 
-import Sanitization from '../sanitization';
-import normalize from '../normalize';
+const Sanitization = require('../sanitization');
+const normalize = require('../normalize');
 
-export default function sanitizate (accepts) {
+module.exports = function sanitizate (accepts) {
   return async (context) => {
     if (typeof accepts === 'function') {
       accepts = accepts(context);
@@ -41,4 +41,4 @@ export default function sanitizate (accepts) {
     }
     return context;
   };
-}
+};

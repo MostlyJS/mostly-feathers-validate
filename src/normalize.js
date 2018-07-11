@@ -1,6 +1,6 @@
-import makeDebug from 'debug';
-import { Dynamic } from 'mostly-entity';
-import fp from 'mostly-func';
+const makeDebug = require('debug');
+const { Dynamic } = require('mostly-entity');
+const fp = require('mostly-func');
 
 const debug = makeDebug('mostly:feathers-validate:dynamic');
 
@@ -68,7 +68,7 @@ function coerceAll (obj) {
   return obj;
 }
 
-export default async function normalize (params, accepts, options = { delimiters: ',' }) {
+module.exports = async function normalize (params, accepts, options = { delimiters: ',' }) {
   params = params || {};
   accepts = accepts || [];
 
@@ -140,4 +140,4 @@ export default async function normalize (params, accepts, options = { delimiters
   await Promise.all(buildAll(accepts));
 
   return params;
-}
+};
