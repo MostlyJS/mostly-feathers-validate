@@ -2,7 +2,11 @@
   "name": "mostly-feathers-validate",
   "version": "1.1.1",
   "description": "MostlyJS utility for schema validation, sanitization and client notification",
-  "author": "Forafish",
+  "author": {
+    "name": "mostly",
+    "email": "hello@playingio.com",
+    "url": "https://mostlyjs.github.com"
+  },
   "license": "MIT",
   "main": "index.js",
   "scripts": {
